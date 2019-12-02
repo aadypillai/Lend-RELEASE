@@ -71,6 +71,7 @@ public class SignupActivity extends AppCompatActivity {
     public String uploadedImageURL;
     public Button image;
     public EditText etConfirmPassword;
+    public AutocompleteSupportFragment autocompleteSupportFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,7 +181,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.acLocation);
+        autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.acLocation);
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -207,6 +208,10 @@ public class SignupActivity extends AppCompatActivity {
 
     public void createAccount(String pass, String pass2) {
         //validate if passwords are same
+        if (etEmail.getText().toString() == null || etName.getText().toString() == null || etPassword.getText().toString() == null || etConfirmPassword.getText().toString() == null || userPlace == null) {
+            Toast.makeText(getApplicationContext(),"Please make to fill out all fields!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (pass.equals(pass2)) {
 
         }
@@ -291,6 +296,7 @@ public class SignupActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 });
+                image.setText("Photo Uploaded!");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "file not found", Toast.LENGTH_SHORT).show();
